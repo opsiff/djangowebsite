@@ -222,7 +222,7 @@ class LoginView(APIView):
         print('开始验证')
         response = CommonResponse()
         check_form = LoginCheckForm(request.POST)
-        if check_form.is_valid():
+        if True:
             # 获取客户端传来的token
             client_token = request.token
             print(client_token)
@@ -233,11 +233,6 @@ class LoginView(APIView):
             try:
                 keys = conn.keys()
                 keys = [str(key, encoding='utf-8') for key in keys]
-                # print('client_token', client_token)
-                # print('keys', keys)
-                # print(keys[3])
-                # print('status', client_token in keys)
-                # print()
 
             except Exception as e:
                 print(e)
@@ -293,14 +288,17 @@ class RegisterView(APIView):
 
         response = CommonResponse()
         check_form = RegisterCheckForm(request.POST)
-        print(request.POST)
-        print(check_form.is_valid())
-        if check_form.is_valid():
-            passwd = request.POST.get('passwd', None)
-            telephone = request.POST.get('telephone', None)
+        print('post:',request.POST)
+        print(type(request.POST))
+        postdict=request.POST.copy()
+        #print(check_form.is_valid())
+        if True:
+            passwd = postdict['passwd']
+            telephone = postdict['telephone']
+            print (passwd,telephone)
             try:
                 re=login.request(telephone,passwd)
-                print (re)
+                print ('jwch result:',re)
                 id=re['学号']
                 name=re['姓名']
                 sex=re['性别']
@@ -317,10 +315,10 @@ class RegisterView(APIView):
                     response.msg = '用户已存在'
             except Exception as e:
                 print(e)
-                response.status = 100
+                response.status = 110
                 response.msg = '登陆失败'
         else:
-            response.status = 101
+            response.status = 111
             response.msg = '信息格式错误'
 
         return Response(response.get_dic())

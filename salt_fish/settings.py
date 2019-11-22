@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'salt_fish',
         'HOST': '127.0.0.1',
         "USER": 'root',
-        'PASSWORD': 'jkluiop',
+        'PASSWORD': 'root',
     }
 }
 
