@@ -298,12 +298,16 @@ public class AddFragment extends Fragment {
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 Bitmap bitmap = ((BitmapDrawable) picture.getDrawable()).getBitmap();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+
                 byte[] bytes = bos.toByteArray();
+
                 Log.v("byte", bytes.toString());
                 BufferedOutputStream boss = null;
                 FileOutputStream fos = null;
                 File file = null;
-                file = new File("");
+                String filePath = getActivity().getExternalCacheDir().getPath().toString()+"/photo.jpg";
+
+                file = new File(filePath);
                 try {
                     fos = new FileOutputStream(file);
                 } catch (FileNotFoundException e) {
@@ -311,6 +315,7 @@ public class AddFragment extends Fragment {
                 }
                 boss = new BufferedOutputStream(fos);
                 try {
+                    Log.v("byte", bytes.toString());
                     boss.write(bytes);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -329,6 +334,7 @@ public class AddFragment extends Fragment {
                         .build();
                 Request request = new Request.Builder()
                         .url("http://122.112.159.211/message/0/submmit")
+                        //.url("http://192.168.1.184/message/0/submmit")
                         .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
                         .post(requestBody)
                         .build();
