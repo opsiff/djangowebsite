@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="30dp">
+    <TextView
+        android:layout_marginLeft="5dp"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/info_type"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        />
+    <!--实现两端对齐-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <TextView
+        android:layout_marginRight="5dp"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/info_detail"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        />
+</LinearLayout>

@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">xianFish</string>
+    <string name="title_home">主页</string>
+    <string name="title_assistent">二手</string>
+    <string name="title_add">添加</string>
+    <string name="title_notifications">消息</string>
+    <string name="title_target">任务</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <array name="Gary">
+        <item>拍照</item>
+        <item>相册</item>
+    </array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

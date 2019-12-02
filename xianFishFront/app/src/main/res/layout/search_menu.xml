@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary">
+
+
+
+    <Button
+        android:layout_marginLeft="5dp"
+        android:id="@+id/search_button"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/button_corner"
+        android:hint="搜索你想要" />
+
+    <ImageView
+        android:layout_marginLeft="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:adjustViewBounds="true"
+        android:background="#00000000"
+        android:scaleType="centerCrop"
+        android:src="@drawable/search_p" />
+
+
+</LinearLayout>
