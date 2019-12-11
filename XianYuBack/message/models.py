@@ -12,7 +12,7 @@ class Message(models.Model):
     post_date=models.DateTimeField(auto_now_add=True) #提交日期
     last_date=models.DateTimeField(auto_now=True) #最后修改日期
     def __str__(self):
-        listmsg=[]
+        listmsg={}
         listmsg['msgId'] = self.msgId
         listmsg['linkman'] = self.linkman
         listmsg['contactWay'] = self.contactWay
@@ -21,4 +21,4 @@ class Message(models.Model):
         listmsg['img'] = self.img
         listmsg['post_date'] = self.linkman
         listmsg['last_date'] = self.linkman
-        return listmsg
+        return str(listmsg)
