@@ -118,7 +118,6 @@ public class AddFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                Log.v(".,.,.,", "xxxx");
                 builder.setItems(getResources().getStringArray(R.array.Gary), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -170,13 +169,21 @@ public class AddFragment extends Fragment {
 //                    json.put("phone",phone);
 //                    json.put("user",attaName);
                 sendPost();
-
+                reSetUI();
 
             }
         });
         return root;
     }
 
+
+    private void reSetUI(){
+        editUser.setText(null);
+        editPhone.setText(null);
+        editPrice.setText(null);
+        editDiscription.setText(null);
+        picture.setImageResource(R.drawable.add_picture);
+    }
 
     private void openAlbum() {
 //隐式Intent
@@ -294,7 +301,7 @@ public class AddFragment extends Fragment {
                 builder.add("user", attaName);
                 builder.add("detail", detail);
 //                Log.v("<><><>",AddFragment.this.outputImage.getAbsolutePath());
-                //File file = new File(picture.getDrawable());
+                //File file = ne  w File(picture.getDrawable());
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 Bitmap bitmap = ((BitmapDrawable) picture.getDrawable()).getBitmap();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
@@ -354,6 +361,7 @@ public class AddFragment extends Fragment {
                 }
             }
         }).start();
+        Toast.makeText(getActivity(), "物品发布成功", Toast.LENGTH_LONG).show();
     }
 
     public static File getFile(byte[] bfile, String filePath, String fileName) {

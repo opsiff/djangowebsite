@@ -2,10 +2,15 @@ package com.example.xianfish.ui.home;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Looper;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -19,8 +24,22 @@ import com.example.xianfish.utils.AssistantBook;
 import com.example.xianfish.utils.AssistantBookAdapter;
 import com.example.xianfish.utils.mPagerAdapter;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 public class HomeFragment extends Fragment {
@@ -45,7 +64,42 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         AssistantBookAdapter bookAdapter = new AssistantBookAdapter(assistantBookList);
 
+        //TODO:POST returnList
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Message message = new Message();
+                message.what = 0;
+                OkHttpClient client = new OkHttpClient();
 
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("price","123")
+                        .build();
+                Request request = new Request.Builder()
+                        .url("http://122.112.159.211/message/0/returnList")
+                        //.url("http://192.168.1.184/message/0/returnList")
+                        //.addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
+                        .post(requestBody)
+                        .build();
+
+                try {
+                    Response response = client.newCall(request).execute();
+                    String responseData = response.body().string();
+                    Toast.makeText(getActivity(),responseData,Toast.LENGTH_SHORT).show();
+                    Log.v("byte", responseData);
+                    Looper.prepare();
+                    message.obj = responseData;
+//                    mHandler .sendMessage(message);
+//                    SharedPreferences.Editor editor=getSharedPreferences("data",MODE_PRIVATE).edit();
+//                    editor.putString("perInfo",responseData);
+                    Looper.loop();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
         bookAdapter.setRecyclerViewOnItemClickListener(new AssistantBookAdapter.RecyclerViewOnItemClickListener() {
             @Override
             public void onItemClickListener(View view, int position) {

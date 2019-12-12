@@ -1,5 +1,6 @@
 package com.example.xianfish.ui;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -11,7 +12,6 @@ import com.example.xianfish.R;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -80,6 +80,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences x = getSharedPreferences("data", MODE_PRIVATE);
+        ActionBar actionBar;
+        actionBar=getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.hide();
+        }
         flag = x.getInt("flag", 0);
         if (flag == 1) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);

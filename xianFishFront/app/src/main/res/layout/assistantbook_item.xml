@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:layout_margin="5dp">
+    android:layout_height="200dp">
 
 
     <ImageView
@@ -27,10 +26,20 @@
             android:layout_gravity="center_vertical" />
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@android:color/darker_gray"/>
+
+        <TextView
             android:id="@+id/assistantBook_price"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@android:color/darker_gray"/>
 
         <TextView
             android:id="@+id/assistantBook_discription"

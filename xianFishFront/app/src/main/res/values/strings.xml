@@ -3,7 +3,7 @@
     <string name="title_home">主页</string>
     <string name="title_assistent">二手</string>
     <string name="title_add">添加</string>
-    <string name="title_notifications">消息</string>
+    <string name="title_notifications">个人</string>
     <string name="title_target">任务</string>
     <string name="title_activity_search">SearchActivity</string>
     <array name="Gary">
