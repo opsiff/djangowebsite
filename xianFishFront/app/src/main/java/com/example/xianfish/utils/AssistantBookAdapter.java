@@ -81,7 +81,7 @@ public class AssistantBookAdapter extends RecyclerView.Adapter<AssistantBookAdap
 
         AssistantBook assistantBook = myAssistantBookList.get(position);
         holder.assistantBookName.setText(assistantBook.getName());
-        holder.imageView.setImageResource(assistantBook.getAsssistentBookImage());
+        holder.imageView.setImageBitmap(assistantBook.getAsssistentBookImage());
         holder.assistantBookPrice.setText(assistantBook.getPrice());
         holder.assistantBookDiscription.setText(assistantBook.getDiscription());
         holder.view.setTag(position);

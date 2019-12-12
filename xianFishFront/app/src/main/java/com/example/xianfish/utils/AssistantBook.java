@@ -11,17 +11,17 @@ public class AssistantBook implements Serializable {
     private String discription;
     private String attachNum;//联系电话
     private String userID;
-    private int asssistentBookImage;
+    private Bitmap asssistentBookImage;
 
     public AssistantBook getAssistantBook(){
         return this;
     }
 
-    public int getAsssistentBookImage() {
+    public Bitmap getAsssistentBookImage() {
         return asssistentBookImage;
     }
 
-    public void setAsssistentBookImage(int asssistentBookImage) {
+    public void setAsssistentBookImage(Bitmap asssistentBookImage) {
         this.asssistentBookImage = asssistentBookImage;
     }
 

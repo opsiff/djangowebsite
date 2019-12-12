@@ -147,7 +147,7 @@ public class NotificationsFragment extends Fragment {
                     try {
 //拍照成功后显示图片
                         Bitmap bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(imageUri));
-                        circleImageView.initBitmapShader(bitmap);
+                        //circleImageView.initBitmapShader(bitmap);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -195,7 +195,7 @@ public class NotificationsFragment extends Fragment {
 //显示选中的图片
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             //TODO:圆形view怎么加载图片
-            circleImageView.setImageBitmap(bitmap);
+            //circleImageView.setImageBitmap(bitmap);
         } else {
             Toast.makeText(getActivity(), "failed to get image", Toast.LENGTH_LONG).show();
         }
