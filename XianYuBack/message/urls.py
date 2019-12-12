@@ -7,11 +7,12 @@ from . import views
 /message/<category>/<id>/detail GET方式 拿到某一类的某个具体信息
 /message/<categoyy>/submmit     POST方式
 /message/<category>/list/<sort>  某一类按照某种方式排序的前30列表
-
+/message/<categoyy>/returnList     POST方式
 """
 app_name='message'
 urlpatterns = [
     path('<str:category>/<int:id>/detail',views.returnDetail,name='message'),
     path('<str:category>/submmit',views.submmit,name='message'),
     path('<str:category>/list/<int:sort>',views.returnList,name='message'),
+    path('<str:category>/returnList',views.returnList,name='message'),
 ]

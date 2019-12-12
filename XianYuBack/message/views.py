@@ -16,7 +16,8 @@ def submmit(request,category): #提交信息 二手信息、任务信息
     }
     if request.method=="POST":
         try:
-            msgId=str(int(round(time.time())*100000))
+            msgId=str((int(time.perf_counter() * 1000000000000)))
+            #msgId=str(int(round(time.time())*100000))
             price=request.POST["price"]
             phone=request.POST["phone"]
             user=request.POST["user"]
@@ -57,7 +58,8 @@ def returnList(request,category,sort="default"):#提交信息 二手信息、任
         "message": None,
         "data": None
     }
-    list_meg=Message.objects.get()
+    list_meg=[]
     #TODO: 返回二手信息列表
-    return JsonResponse(result,safe=False)
-
+    list_meg=Message.objects.all()
+    result['data']=list_meg
+    return HttpResponse(str(result))
