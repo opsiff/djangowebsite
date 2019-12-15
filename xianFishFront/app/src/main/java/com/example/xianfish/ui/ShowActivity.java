@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.xianfish.R;
 import com.example.xianfish.utils.AssistantBook;
 
@@ -57,7 +58,7 @@ public class ShowActivity extends AppCompatActivity {
         AssistantBook assistantBook = (AssistantBook) intent.getSerializableExtra("name");
 
         showP = findViewById(R.id.show_image);
-        showP.setImageResource(assistantBook.getAsssistentBookImage());
+        Glide.with(this).load(assistantBook.getAsssistentBookImage()).into(showP);
 
         showU = findViewById(R.id.show_user);
         showU.setText(assistantBook.getName());

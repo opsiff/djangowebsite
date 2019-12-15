@@ -304,7 +304,7 @@ public class AddFragment extends Fragment {
                 //File file = ne  w File(picture.getDrawable());
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 Bitmap bitmap = ((BitmapDrawable) picture.getDrawable()).getBitmap();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 1, bos);
 
                 byte[] bytes = bos.toByteArray();
 

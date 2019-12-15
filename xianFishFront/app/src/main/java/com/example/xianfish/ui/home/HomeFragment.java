@@ -1,10 +1,14 @@
 package com.example.xianfish.ui.home;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
@@ -37,9 +41,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -58,14 +72,17 @@ public class HomeFragment extends Fragment {
 
     private ViewPager mAdvertiseViewPager;
     private RecyclerView recyclerView;
-    private int[] mImage = new int[3];
+    final private int[] mImage = new int[3];
     private List<AssistantBook> assistantBookList = new ArrayList<>();
     private View root;
-    private Bitmap bitmap;
     public String responseData;
-    private byte[] responseImg;
+    private AssistantBookAdapter bookAdapter;
+    static  final int SUCCESS=1;
+    static  final int FAIL=0;
+    public Handler handler;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         root = inflater.inflate(R.layout.fragment_home, container, false);
         initView();
         mPagerAdapter mPagerAdapter = new mPagerAdapter(mImage);
@@ -74,15 +91,38 @@ public class HomeFragment extends Fragment {
         recyclerView = root.findViewById(R.id.assistantBook_Rview);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-        AssistantBookAdapter bookAdapter = new AssistantBookAdapter(assistantBookList);
 
-        //TODO:POST returnList
+        handler=new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case SUCCESS:
+                        bookAdapter = new AssistantBookAdapter(getActivity(),assistantBookList);
+                        bookAdapter.setRecyclerViewOnItemClickListener(new AssistantBookAdapter.RecyclerViewOnItemClickListener() {
+                            @Override
+                            public void onItemClickListener(View view, int position) {
+                                AssistantBook newBook = new AssistantBook();
+                                newBook = assistantBookList.get(position).getAssistantBook();
+                                Intent intent = new Intent(getActivity(), ShowActivity.class);
+                                intent.putExtra("name",newBook);
+                                startActivity(intent);
+                            }
+                        });
+                        recyclerView.setAdapter(bookAdapter);
+                        break;
+                    case FAIL:
+
+                        break;
+                    default:
+                        super.handleMessage(msg);
+                }
+            }
+        };
+        bookAdapter = new AssistantBookAdapter(getActivity(),assistantBookList);
+
+
         getMessage();
-        try {
-            sleep(1000);
-        }catch (Exception e){
-
-        }
         bookAdapter.setRecyclerViewOnItemClickListener(new AssistantBookAdapter.RecyclerViewOnItemClickListener() {
             @Override
             public void onItemClickListener(View view, int position) {
@@ -93,88 +133,48 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        Log.v(TAG, "dddd");
-         Log.v(TAG, responseData);
-        parseData(responseData);
         recyclerView.setAdapter(bookAdapter);
         return root;
     }
 
 
+
     private void getMessage(){
-        new Thread(new Runnable() {
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = new RequestBody() {
+            @Nullable
             @Override
-            public void run() {
-                Message message = new Message();
-                message.what = 0;
-                OkHttpClient client = new OkHttpClient();
-                RequestBody requestBody = new RequestBody() {
-                    @Nullable
-                    @Override
-                    public MediaType contentType() {
-                        return null;
-                    }
-
-                    @Override
-                    public void writeTo(@NotNull BufferedSink bufferedSink) throws IOException {
-
-                    }
-                };
-                Request request = new Request.Builder()
-                        .url("http://122.112.159.211/message/0/returnList")
-                        //.url("http://192.168.1.184/message/0/returnList")
-                        .post(requestBody)
-                        .build();
-
-                try {
-                    Response response = client.newCall(request).execute();
-                    responseData = response.body().string();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            public MediaType contentType() {
+                return null;
             }
-        }).start();
-    }
 
-    private Bitmap getImage(final String name){
-        new Thread(new Runnable() {
             @Override
-            public void run() {
-                Message message = new Message();
-                message.what = 0;
-                OkHttpClient client = new OkHttpClient();
-                RequestBody requestBody = new RequestBody() {
-                    @Nullable
-                    @Override
-                    public MediaType contentType() {
-                        return null;
-                    }
+            public void writeTo(@NotNull BufferedSink bufferedSink) throws IOException {
 
-                    @Override
-                    public void writeTo(@NotNull BufferedSink bufferedSink) throws IOException {
-
-                    }
-                };
-                Request request = new Request.Builder()
-                        .url("http://122.112.159.211/message/0/returnimg"+name)
-                        //.url("http://192.168.1.184/message/0/returnList")
-                        .post(requestBody)
-                        .build();
-
-                try {
-                    Response response = client.newCall(request).execute();
-                    responseImg= response.body().toString().getBytes();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
-        }).start();
-        Bitmap bitmap= BitmapFactory.decodeByteArray(responseImg, 0, responseImg.length);
-        return bitmap;
+        };
+        Request request = new Request.Builder()
+                .url("http://122.112.159.211/message/0/returnList")
+                .post(requestBody)
+                .build();
+
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i(TAG, e.toString());
+            }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Looper.prepare();
+                responseData = response.body().string();
+                parseData(responseData);
+                Looper.loop();
+            }
+        });
     }
 
     private void parseData(String result){
-
         try{
             JSONObject jsonObject = new JSONObject(result);
             JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -184,9 +184,20 @@ public class HomeFragment extends Fragment {
                 assistantBook.setName(object.getString("linkman"));
                 assistantBook.setAttachNum(object.getString("contactWay"));
                 assistantBook.setPrice(object.getString("price"));
-                assistantBook.setDiscription(object.getString("details"));
-                assistantBook.setAsssistentBookImage(getImage(object.getString("img")));
+                assistantBook.setDiscription(object.getString("detail"));
+                String str = object.getString("img");
+                String newS = "http://122.112.159.211/message/0/returnimg?img="+str;
+                URL url = null;
+                try {
+                    url = new URL(newS);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                assistantBook.setAsssistentBookImage(url);
                 assistantBookList.add(assistantBook);
+                Message msg=new Message();
+                msg.what = 1;
+                handler.sendMessage(msg);
             }
         }catch (JSONException e){
             e.printStackTrace();

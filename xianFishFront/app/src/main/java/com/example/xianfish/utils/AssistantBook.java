@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.media.Image;
 
 import java.io.Serializable;
+import java.net.URL;
 
 public class AssistantBook implements Serializable {
     private String name;
@@ -11,17 +12,17 @@ public class AssistantBook implements Serializable {
     private String discription;
     private String attachNum;//联系电话
     private String userID;
-    private Bitmap asssistentBookImage;
+    private URL asssistentBookImage;
 
     public AssistantBook getAssistantBook(){
         return this;
     }
 
-    public Bitmap getAsssistentBookImage() {
+    public URL getAsssistentBookImage() {
         return asssistentBookImage;
     }
 
-    public void setAsssistentBookImage(Bitmap asssistentBookImage) {
+    public void setAsssistentBookImage(URL asssistentBookImage) {
         this.asssistentBookImage = asssistentBookImage;
     }
 

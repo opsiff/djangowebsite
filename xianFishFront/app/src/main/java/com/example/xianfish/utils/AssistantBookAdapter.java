@@ -1,5 +1,6 @@
 package com.example.xianfish.utils;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.xianfish.R;
 
 import java.util.List;
@@ -16,9 +18,13 @@ import java.util.List;
 public class AssistantBookAdapter extends RecyclerView.Adapter<AssistantBookAdapter.ViewHolder> implements View.OnClickListener, View.OnLongClickListener {
     private RecyclerViewOnItemClickListener onItemClickListener;
     private RecyclerViewOnItemLongClickListener onItemLongClickListener;
-
-
+    private Context mContext;
     private List<AssistantBook> myAssistantBookList;
+
+    public AssistantBookAdapter(Context mContext, List<AssistantBook> list){
+        this.mContext = mContext;
+        myAssistantBookList = list;
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         private View view;
@@ -81,7 +87,7 @@ public class AssistantBookAdapter extends RecyclerView.Adapter<AssistantBookAdap
 
         AssistantBook assistantBook = myAssistantBookList.get(position);
         holder.assistantBookName.setText(assistantBook.getName());
-        holder.imageView.setImageBitmap(assistantBook.getAsssistentBookImage());
+        Glide.with(mContext).load(assistantBook.getAsssistentBookImage()).into(holder.imageView);
         holder.assistantBookPrice.setText(assistantBook.getPrice());
         holder.assistantBookDiscription.setText(assistantBook.getDiscription());
         holder.view.setTag(position);

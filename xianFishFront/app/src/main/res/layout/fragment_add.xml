@@ -32,6 +32,7 @@
                 <EditText
                     android:gravity="center"
                     android:id="@+id/edit_user"
+                    android:hint="图书名称"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="45dp"/>
@@ -52,6 +53,7 @@
                 <EditText
                     android:gravity="center"
                     android:id="@+id/edit_phone"
+                    android:hint="联系方式：qq或者微信"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="45dp"/>
@@ -72,6 +74,7 @@
                 <EditText
                     android:gravity="center"
                     android:id="@+id/edit_price"
+                    android:hint="价格（数字）"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="45dp"/>
