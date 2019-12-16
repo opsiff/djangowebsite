@@ -35,6 +35,7 @@ import android.provider.MediaStore;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xianfish.R;
@@ -62,6 +63,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 public class AddFragment extends Fragment {
 
@@ -78,6 +80,7 @@ public class AddFragment extends Fragment {
     public EditText editPrice;
     public EditText editDiscription;
     private ImageView picture;
+    private String userID;
     File outputImage;
     JSONObject json = new JSONObject();
     //图片本地的真实路径
@@ -113,6 +116,7 @@ public class AddFragment extends Fragment {
         editPrice = root.findViewById(R.id.edit_price);
         affirm = root.findViewById(R.id.affirm_btn);
         editDiscription = root.findViewById(R.id.edit_discription);
+        userID = getUseID();
         picture.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -287,6 +291,21 @@ public class AddFragment extends Fragment {
         displayImage(imagePath);
     }
 
+    private String getUseID(){
+        SharedPreferences editor=getActivity().getSharedPreferences("data",MODE_PRIVATE);
+        String str=editor.getString("perInfo",null);
+        String UserID=null;
+        if (str!=null) {
+
+//            str = str.replace("\\","");
+            com.alibaba.fastjson.JSONObject json = com.alibaba.fastjson.JSONObject.parseObject(str);
+            com.alibaba.fastjson.JSONObject data = json.getJSONObject("data");
+            UserID = data.getString("number");
+        }
+        return UserID;
+
+    }
+
     private void sendPost() {
         new Thread(new Runnable() {
             @Override
@@ -296,6 +315,7 @@ public class AddFragment extends Fragment {
                 OkHttpClient client = new OkHttpClient();
 
                 FormBody.Builder builder = new FormBody.Builder();
+                builder.add("userID",userID);
                 builder.add("price", price);
                 builder.add("phone", phone);
                 builder.add("user", attaName);
@@ -304,11 +324,10 @@ public class AddFragment extends Fragment {
                 //File file = ne  w File(picture.getDrawable());
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 Bitmap bitmap = ((BitmapDrawable) picture.getDrawable()).getBitmap();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 1, bos);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, bos);
 
                 byte[] bytes = bos.toByteArray();
 
-                Log.v("byte", bytes.toString());
                 BufferedOutputStream boss = null;
                 FileOutputStream fos = null;
                 File file = null;
@@ -333,11 +352,12 @@ public class AddFragment extends Fragment {
                 RequestBody fileBody=RequestBody.create( MediaType.parse("image/*"),file);
                 RequestBody requestBody = new MultipartBody.Builder()
                         .setType(MultipartBody.FORM)
-                        .addFormDataPart("price",price)
-                        .addFormDataPart("phone",phone)
-                        .addFormDataPart("user",attaName)
-                        .addFormDataPart("detail",detail)
-                        .addFormDataPart("img",file.getName(),fileBody)
+                        .addFormDataPart("userID", userID)
+                        .addFormDataPart("price", price)
+                        .addFormDataPart("phone", phone)
+                        .addFormDataPart("user", attaName)
+                        .addFormDataPart("detail", detail)
+                        .addFormDataPart("img", file.getName(), fileBody)
                         .build();
                 Request request = new Request.Builder()
                         .url("http://122.112.159.211/message/0/submmit")

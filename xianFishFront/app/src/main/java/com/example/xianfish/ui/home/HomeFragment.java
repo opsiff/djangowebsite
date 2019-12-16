@@ -79,7 +79,7 @@ public class HomeFragment extends Fragment {
     private AssistantBookAdapter bookAdapter;
     static  final int SUCCESS=1;
     static  final int FAIL=0;
-    public Handler handler;
+    public static Handler handler;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 

@@ -54,6 +54,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.xianfish.ui.Add.AddFragment.CHOOSE_PHOTO;
 import static com.example.xianfish.ui.Add.AddFragment.TAKE_PHOTO;
@@ -63,6 +64,7 @@ public class NotificationsFragment extends Fragment {
     File outputImage;
     public static final int TAKE_PHOTO = 1;
     public static final int CHOOSE_PHOTO = 2;
+    public CircleImageView circleImageView;
     org.json.JSONObject json = new org.json.JSONObject();
     private ArrayList<SettingItem> settingItems=new ArrayList<SettingItem>() ;
     @Override
@@ -79,7 +81,19 @@ public class NotificationsFragment extends Fragment {
         listView.setAdapter(settingItemAdapter);
         listView.setOnItemClickListener(new OnClickItem());
 
-        CircleImageView circleImageView = root.findViewById(R.id.avata_image);
+        String imagePath = null;
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("logo", MODE_PRIVATE);
+        imagePath = sharedPreferences.getString("logoPath","");
+        Log.w(TAG, imagePath);
+
+        if (!imagePath.isEmpty()){
+
+            //TODO
+//            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+//            circleImageView.setImageBitmap(bitmap);
+        }
+
+        circleImageView = root.findViewById(R.id.avata_image);
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +101,6 @@ public class NotificationsFragment extends Fragment {
                 builder.setItems(getResources().getStringArray(R.array.Gary), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.v("which", String.valueOf(which));
                         if (which == 0) {
                             outputImage = new File(getActivity().getExternalCacheDir(), "output_image.jpg");
                             try {
@@ -145,9 +158,8 @@ public class NotificationsFragment extends Fragment {
             case TAKE_PHOTO:
                 if (resultCode == RESULT_OK) {
                     try {
-//拍照成功后显示图片
                         Bitmap bitmap = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(imageUri));
-                        //circleImageView.initBitmapShader(bitmap);
+                        circleImageView.setImageBitmap(bitmap);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
@@ -187,6 +199,7 @@ public class NotificationsFragment extends Fragment {
         } else if ("file".equalsIgnoreCase(uri.getScheme())) {
             imagePath = uri.getPath();
         }
+
         displayImage(imagePath);
     }
 
@@ -195,7 +208,12 @@ public class NotificationsFragment extends Fragment {
 //显示选中的图片
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             //TODO:圆形view怎么加载图片
-            //circleImageView.setImageBitmap(bitmap);
+            circleImageView.setImageBitmap(bitmap);
+            SharedPreferences.Editor editor = getActivity().getSharedPreferences("logo", MODE_PRIVATE).edit();
+            String filePath = getActivity().getExternalCacheDir().getPath().toString()+"/photo.jpg";
+            editor.putString("logoPath",filePath);
+            editor.commit();
+            Toast.makeText(getActivity(), imagePath, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getActivity(), "failed to get image", Toast.LENGTH_LONG).show();
         }
