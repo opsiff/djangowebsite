@@ -9,6 +9,7 @@
     <ImageView
 
         android:id="@+id/item_icon"
+        android:layout_marginLeft="6dp"
         android:layout_width="30dp"
         android:layout_height="match_parent"
         android:gravity="center_vertical" />

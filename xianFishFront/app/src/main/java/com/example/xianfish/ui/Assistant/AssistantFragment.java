@@ -15,12 +15,14 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.xianfish.R;
 import com.example.xianfish.ui.ShowActivity;
 import com.example.xianfish.utils.AssistantBook;
 import com.example.xianfish.utils.AssistantBookAdapter;
+import com.example.xianfish.utils.AssistantBookAdapter2;
 import com.example.xianfish.utils.mPagerAdapter;
 
 import org.jetbrains.annotations.NotNull;
@@ -52,7 +54,7 @@ public class AssistantFragment extends Fragment {
     private List<AssistantBook> assistantBookList = new ArrayList<>();
     private View root;
     public String responseData;
-    private AssistantBookAdapter bookAdapter;
+    private AssistantBookAdapter2 bookAdapter;
     static  final int SUCCESS=1;
     static  final int FAIL=0;
     public Handler handler;
@@ -62,17 +64,19 @@ public class AssistantFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_assistant, container, false);
 
         recyclerView = root.findViewById(R.id.assistantBook_Ras);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
+//        recyclerView.setLayoutManager(linearLayoutManager);
+        StaggeredGridLayoutManager layoutManager=new
+                StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
         handler=new Handler(){
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 switch (msg.what) {
                     case SUCCESS:
-                        bookAdapter = new AssistantBookAdapter(getActivity(),assistantBookList);
-                        bookAdapter.setRecyclerViewOnItemClickListener(new AssistantBookAdapter.RecyclerViewOnItemClickListener() {
+                        bookAdapter = new AssistantBookAdapter2(getActivity(),assistantBookList);
+                        bookAdapter.setRecyclerViewOnItemClickListener(new AssistantBookAdapter2.RecyclerViewOnItemClickListener() {
                             @Override
                             public void onItemClickListener(View view, int position) {
                                 AssistantBook newBook = new AssistantBook();
@@ -92,11 +96,11 @@ public class AssistantFragment extends Fragment {
                 }
             }
         };
-        bookAdapter = new AssistantBookAdapter(getActivity(),assistantBookList);
+        bookAdapter = new AssistantBookAdapter2(getActivity(),assistantBookList);
 
 
         getMessage();
-        bookAdapter.setRecyclerViewOnItemClickListener(new AssistantBookAdapter.RecyclerViewOnItemClickListener() {
+        bookAdapter.setRecyclerViewOnItemClickListener(new AssistantBookAdapter2.RecyclerViewOnItemClickListener() {
             @Override
             public void onItemClickListener(View view, int position) {
                 AssistantBook newBook = new AssistantBook();

@@ -38,6 +38,7 @@ import androidx.fragment.app.Fragment;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.xianfish.R;
+import com.example.xianfish.ui.DeleteActivity;
 import com.example.xianfish.ui.InfoActivity;
 import com.example.xianfish.ui.LoginActivity;
 import com.example.xianfish.ui.MainActivity;
@@ -82,14 +83,14 @@ public class NotificationsFragment extends Fragment {
         listView.setOnItemClickListener(new OnClickItem());
 
         String imagePath = null;
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("logo", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getActivity(). getSharedPreferences("logo", MODE_PRIVATE);
         imagePath = sharedPreferences.getString("logoPath","");
         Log.w(TAG, imagePath);
 
         if (!imagePath.isEmpty()){
 
             //TODO
-//            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+//            Bitmap bitmap = BitmapFactory.decodeFile(getActivity().getExternalCacheDir().getPath().toString()+imagePath);
 //            circleImageView.setImageBitmap(bitmap);
         }
 
@@ -246,7 +247,7 @@ public class NotificationsFragment extends Fragment {
 
     public void initData(){
         String []names=new String[]{"我完成的","我的发布","我的收藏","注销"};
-        int [] resId=new int[]{R.drawable.star,R.drawable.star,R.drawable.star,R.drawable.loginout};
+        int [] resId=new int[]{R.drawable.mydone,R.drawable.mysubmit,R.drawable.star,R.drawable.loginout};
         for (int i=0;i<names.length;i++){
             SettingItem item=new SettingItem(names[i],resId[i]);
             settingItems.add(item);
@@ -274,6 +275,11 @@ public class NotificationsFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             switch (position){
+                case 1:{
+                    Intent intent= new Intent(NotificationsFragment.this.getActivity(), DeleteActivity.class);
+                    startActivity(intent);
+
+                }break;
                 case 3: {
                     SharedPreferences.Editor editor= NotificationsFragment.this.getActivity().getSharedPreferences("data",MODE_PRIVATE).edit();
                     editor.putInt("flag",0);

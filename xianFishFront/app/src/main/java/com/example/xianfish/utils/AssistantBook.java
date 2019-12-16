@@ -7,8 +7,18 @@ import java.io.Serializable;
 import java.net.URL;
 
 public class AssistantBook implements Serializable {
+    private String msgId;
     private String name;
     private String price;
+
+    public String getMsgId() {
+        return msgId;
+    }
+
+    public void setMsgId(String msgId) {
+        this.msgId = msgId;
+    }
+
     private String discription;
     private String attachNum;//联系电话
     private String userID;

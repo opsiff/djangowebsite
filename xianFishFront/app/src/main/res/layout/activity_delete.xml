@@ -17,7 +17,7 @@
             android:text="我的发布" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/assistantBook_Rview"
+            android:id="@+id/assistantBook_delete"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

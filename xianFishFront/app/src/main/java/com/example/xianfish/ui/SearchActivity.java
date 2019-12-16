@@ -37,6 +37,7 @@ import java.util.List;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -134,7 +135,7 @@ public class SearchActivity extends AppCompatActivity {
                     listView.clearTextFilter();
                 } else {
                     //使用用户输入的内容对ListView的列表项进行过滤
-                    listView.setFilterText(newText);
+//                    listView.setFilterText(newText);
                 }
                 return true;
             }
@@ -143,24 +144,15 @@ public class SearchActivity extends AppCompatActivity {
 
     private void getMessage(String query){
         OkHttpClient client = new OkHttpClient();
-        RequestBody requestBody = new RequestBody() {
-            @Nullable
-            @Override
-            public MediaType contentType() {
-                return null;
-            }
-
-            @Override
-            public void writeTo(@NotNull BufferedSink bufferedSink) throws IOException {
-
-            }
-        };
-        requestBody.
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("Query", query)
+                .build();
         Request request = new Request.Builder()
-                .url("http://122.112.159.211/message/0/returnList")
+                .url("http://122.112.159.211/message/0/search")
+                .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
                 .post(requestBody)
                 .build();
-
         Call call = client.newCall(request);
         call.enqueue(new Callback() {
             @Override

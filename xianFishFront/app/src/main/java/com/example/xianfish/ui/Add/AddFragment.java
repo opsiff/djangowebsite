@@ -303,7 +303,6 @@ public class AddFragment extends Fragment {
             UserID = data.getString("number");
         }
         return UserID;
-
     }
 
     private void sendPost() {
