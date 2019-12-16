@@ -78,3 +78,29 @@ def loginOut(request):
 
 
 # def check(request):
+
+def search(request, sort="default"):  # 提交信息 二手信息、任务信息 排序方式
+    result = {
+        "status": 500,
+        "message": None,
+        "data": None
+    }
+    list_meg = []
+    if request.method == "POST":
+        linkman = request.POST["linkman"]
+        qs = Message.objects.filter(linkman=linkman)
+        count = 0
+        for i in qs:
+            dict = {'msgId': i.msgId, 'linkman': i.linkman, 'contactWay': i.contactWay, 'price': i.price,
+                    'detail': i.detail, 'img': i.img, 'post_date': str(i.post_date), 'last_date': str(i.last_date)}
+            list_meg.append(dict)
+            count += 1
+            if count >= 15:
+                break
+        result['data'] = list_meg
+        print(json.dumps(result, ensure_ascii=False))
+        return HttpResponse(json.dumps(result, ensure_ascii=False))
+    else:
+        result['data'] = list_meg
+        print(json.dumps(result, ensure_ascii=False))
+        return HttpResponse(json.dumps(result, ensure_ascii=False))

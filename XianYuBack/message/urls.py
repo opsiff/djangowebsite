@@ -1,4 +1,4 @@
-from django.contrib import admin
+﻿from django.contrib import admin
 from django.urls import path
 from . import views
 """
@@ -15,4 +15,8 @@ urlpatterns = [
     path('<str:category>/submmit',views.submmit,name='message'),
     path('<str:category>/list/<int:sort>',views.returnList,name='message'),
     path('<str:category>/returnList',views.returnList,name='message'),
+    path('<str:category>/returnimg',views.returnimg,name='message'),
+    path('<str:category>/search',views.search),
+    path('<str:category>/returnMyList',views.returnMyList),
+    path('<str:category>/dele',views.dele),
 ]

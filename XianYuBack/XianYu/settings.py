@@ -83,7 +83,7 @@ DATABASES = {
         'PORT': '3306',#端口号
         'NAME': 'orm',#库名（组名）
         'USER': 'root',#用户
-        'PASSWORD': '123456',#密码
+        'PASSWORD': '190516',#密码
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },
