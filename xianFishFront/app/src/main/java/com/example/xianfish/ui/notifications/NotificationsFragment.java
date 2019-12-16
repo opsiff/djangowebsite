@@ -59,6 +59,7 @@ import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.xianfish.ui.Add.AddFragment.CHOOSE_PHOTO;
 import static com.example.xianfish.ui.Add.AddFragment.TAKE_PHOTO;
+import static java.lang.Thread.sleep;
 
 public class NotificationsFragment extends Fragment {
     private Uri imageUri;
@@ -82,19 +83,20 @@ public class NotificationsFragment extends Fragment {
         listView.setAdapter(settingItemAdapter);
         listView.setOnItemClickListener(new OnClickItem());
 
+        circleImageView = root.findViewById(R.id.avata_image);
         String imagePath = null;
         SharedPreferences sharedPreferences = getActivity(). getSharedPreferences("logo", MODE_PRIVATE);
         imagePath = sharedPreferences.getString("logoPath","");
         Log.w(TAG, imagePath);
 
         if (!imagePath.isEmpty()){
-
-            //TODO
-//            Bitmap bitmap = BitmapFactory.decodeFile(getActivity().getExternalCacheDir().getPath().toString()+imagePath);
-//            circleImageView.setImageBitmap(bitmap);
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            circleImageView.setImageBitmap(bitmap);
+            Log.w(TAG, imagePath  );
+            Log.w(TAG, bitmap.toString() );
         }
 
-        circleImageView = root.findViewById(R.id.avata_image);
+
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,13 +207,16 @@ public class NotificationsFragment extends Fragment {
     }
 
     private void displayImage(String imagePath) {
+        Toast.makeText(getActivity(), "failed to get image", Toast.LENGTH_LONG).show();
+
         if (imagePath != null) {
 //显示选中的图片
+            Log.v(TAG,"caommsmmsm");
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
             //TODO:圆形view怎么加载图片
             circleImageView.setImageBitmap(bitmap);
             SharedPreferences.Editor editor = getActivity().getSharedPreferences("logo", MODE_PRIVATE).edit();
-            String filePath = getActivity().getExternalCacheDir().getPath().toString()+"/photo.jpg";
+            String filePath = imagePath;
             editor.putString("logoPath",filePath);
             editor.commit();
             Toast.makeText(getActivity(), imagePath, Toast.LENGTH_SHORT).show();
@@ -222,6 +227,7 @@ public class NotificationsFragment extends Fragment {
 
     //通过ContentResolver查询相册中的数据
     private String getImagePath(Uri uri, String selection) {
+        Log.v(TAG,"wquiqiuia");
         String path = null;
         Cursor cursor = getActivity().getContentResolver().query(uri, null, selection, null, null);
         if (cursor != null) {
